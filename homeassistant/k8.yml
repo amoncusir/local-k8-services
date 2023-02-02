@@ -95,7 +95,6 @@ spec:
         - name: homeassist-config-volume
           configMap:
             name: homeassist-config
-            defaultMode: 0777
         - name: homeassist-persistent-storage
           persistentVolumeClaim:
             claimName: homeassist-pv-claim
