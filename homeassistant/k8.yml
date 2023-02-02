@@ -91,7 +91,6 @@ spec:
             - mountPath: "/config"
               name: homeassist-persistent-storage
             - mountPath: "/config/configuration.yaml"
-              subPath: "configuration.yaml"
               name: homeassist-config-volume
       volumes:
         - name: homeassist-config-volume
