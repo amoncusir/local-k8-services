@@ -17,7 +17,7 @@ spec:
         - key: microk8s.io/cluster
           operator: In
           values:
-          - true
+          - "true"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
