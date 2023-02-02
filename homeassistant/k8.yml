@@ -37,12 +37,11 @@ spec:
   volumeName: homeassist-pv
 ---
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
   name: homeassist-config
-type: Opaque
 data:
-  configuration.yaml: |-
+  configuration.yaml: |
     homeassistant:
       # Name of the location where Home Assistant is running
       name: Cellerica
@@ -66,7 +65,6 @@ data:
       use_x_forwarded_for: true
       trusted_proxies:
         - 10.1.0.0/16
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -94,11 +92,11 @@ spec:
               name: homeassist-persistent-storage
             - mountPath: "/config/configuration.yaml"
               subPath: "configuration.yaml"
-              name: homeassist-config
+              name: homeassist-config-volume
       volumes:
-        - name: homeassist-config
-          secret:
-            secretName: homeassist-config
+        - name: homeassist-config-volume
+          configMap:
+            name: homeassist-config
             defaultMode: 0777
         - name: homeassist-persistent-storage
           persistentVolumeClaim:
