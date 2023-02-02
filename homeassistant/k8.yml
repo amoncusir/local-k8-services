@@ -7,19 +7,17 @@ spec:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
+#  volumeMode: Filesystem
   local:
     path: /data/homeassist
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - app1.local
-          - app2.local
-          - app3.local
-          - app4.local
+#  nodeAffinity:
+#    required:
+#      nodeSelectorTerms:
+#      - matchExpressions:
+#        - key: kubernetes.io/hostname
+#          operator: In
+#          values:
+#          - jadess
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
