@@ -39,7 +39,7 @@ kind: ConfigMap
 metadata:
   name: homeassist-config
 data:
-  configuration.yaml: |
+  configuration: |
     homeassistant:
       # Name of the location where Home Assistant is running
       name: Cellerica
@@ -89,7 +89,7 @@ spec:
             - mountPath: "/config"
               name: homeassist-persistent-storage
             - mountPath: "/config/configuration.yaml"
-              subPath: "configuration.yaml"
+              subPath: "configuration"
               name: homeassist-config-volume
       volumes:
         - name: homeassist-config-volume
