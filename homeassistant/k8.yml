@@ -10,14 +10,14 @@ spec:
 #  volumeMode: Filesystem
   local:
     path: /data/homeassist
-#  nodeAffinity:
-#    required:
-#      nodeSelectorTerms:
-#      - matchExpressions:
-#        - key: kubernetes.io/hostname
-#          operator: In
-#          values:
-#          - jadess
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: microk8s.io/cluster
+          operator: In
+          values:
+          - true
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
