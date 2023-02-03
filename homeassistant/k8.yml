@@ -90,8 +90,6 @@ spec:
           securityContext:
             allowPrivilegeEscalation: true
             privileged: true
-            capabilities:
-              add: ["NET_ADMIN", "SYS_TIME"]
           ports:
             - containerPort: 8123
           volumeMounts:
