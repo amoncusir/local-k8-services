@@ -87,6 +87,10 @@ spec:
       containers:
         - name: homeassist
           image: homeassistant/home-assistant
+          securityContext:
+            allowPrivilegeEscalation: true
+            capabilities:
+              add: ["NET_ADMIN", "SYS_TIME"]
           ports:
             - containerPort: 8123
           volumeMounts:
