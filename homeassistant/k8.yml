@@ -79,67 +79,69 @@ spec:
   selector:
     matchLabels:
       app: homeassist
-#   template:
-#     metadata:
-#       labels:
-#         app: homeassist
-#     spec:
-#       containers:
-#         - name: homeassist
-#           image: homeassistant/home-assistant
-#           ports:
-#             - containerPort: 8123
-#           volumeMounts:
-#             - mountPath: "/config"
-#               name: homeassist-persistent-storage
-#             - mountPath: "/config/configuration.yaml"
-#               subPath: "configuration"
-#               name: homeassist-config-volume
-#       volumes:
-#         - name: homeassist-config-volume
-#           configMap:
-#             name: homeassist-config
-#         - name: homeassist-persistent-storage
-#           persistentVolumeClaim:
-#             claimName: homeassist-pv-claim
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: homeassist-pod
-  labels:
-    app: homeassist
-spec:
-  securityContext:
-    privileged: true
-  volumes:
-    - name: homeassist-config-volume
-      configMap:
-        name: homeassist-config
-        items:
-          - key: configuration.yml
-            path: configuration.yml
-    - name: homeassist-persistent-storage
-      persistentVolumeClaim:
-        claimName: homeassist-pv-claim
-  containers:
-    - name: homeassistant
-      image: homeassistant/home-assistant
-      securityContext:
-        privileged: true
-        allowPrivilegeEscalation: true
-      ports:
-        - containerPort: 8123
-      volumeMounts:
-        - name: homeassist-persistent-storage
-          mountPath: "/config"
+  template:
+    metadata:
+      labels:
+        app: homeassist
+    spec:
+      containers:
+        - name: homeassist
+          image: homeassistant/home-assistant
+          ports:
+            - containerPort: 8123
+          volumeMounts:
+            - mountPath: "/config"
+              name: homeassist-persistent-storage
+            - mountPath: "/config/configuration.yaml"
+              name: homeassist-config-volume
+      volumes:
         - name: homeassist-config-volume
-          mountPath: "/config"
+          configMap:
+            name: homeassist-config
+            items:
+              - key: configuration.yml
+                path: configuration.yml
+        - name: homeassist-persistent-storage
+          persistentVolumeClaim:
+            claimName: homeassist-pv-claim
 ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: homeassist-pod
+#   labels:
+#     app: homeassist
+# spec:
+#   securityContext:
+#     privileged: true
+#   volumes:
+#     - name: homeassist-config-volume
+#       configMap:
+#         name: homeassist-config
+#         items:
+#           - key: configuration.yml
+#             path: configuration.yml
+#     - name: homeassist-persistent-storage
+#       persistentVolumeClaim:
+#         claimName: homeassist-pv-claim
+#   containers:
+#     - name: homeassistant
+#       image: homeassistant/home-assistant
+#       securityContext:
+#         privileged: true
+#         allowPrivilegeEscalation: true
+#       ports:
+#         - containerPort: 8123
+#       volumeMounts:
+#         - name: homeassist-persistent-storage
+#           mountPath: "/config"
+#         - name: homeassist-config-volume
+#           mountPath: "/config"
+# ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: homeassist-service
+  name: homeassist
 spec:
   type: ClusterIP
   selector:
@@ -198,6 +200,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: homeassist-service
+                name: homeassist
                 port:
                   number: 443
