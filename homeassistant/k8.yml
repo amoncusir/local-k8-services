@@ -89,6 +89,7 @@ spec:
           image: homeassistant/home-assistant
           securityContext:
             allowPrivilegeEscalation: true
+            privileged: true
             capabilities:
               add: ["NET_ADMIN", "SYS_TIME"]
           ports:
