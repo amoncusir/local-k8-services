@@ -18,6 +18,10 @@ spec:
           operator: In
           values:
           - "true"
+        - key: kubernetes.io/os
+          operator: In
+          values:
+          - "linux"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -39,7 +43,7 @@ kind: ConfigMap
 metadata:
   name: homeassist-config
 data:
-  configuration: |
+  configuration.yml: |
     homeassistant:
       # Name of the location where Home Assistant is running
       name: Cellerica
@@ -62,7 +66,7 @@ data:
       login_attempts_threshold: 5
       use_x_forwarded_for: true
       trusted_proxies:
-        - 10.1.0.0/16
+        - 10.0.0.0/8
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -75,34 +79,67 @@ spec:
   selector:
     matchLabels:
       app: homeassist
-  template:
-    metadata:
-      labels:
-        app: homeassist
-    spec:
-      containers:
-        - name: homeassist
-          image: homeassistant/home-assistant
-          ports:
-            - containerPort: 8123
-          volumeMounts:
-            - mountPath: "/config"
-              name: homeassist-persistent-storage
-            - mountPath: "/config/configuration.yaml"
-              subPath: "configuration"
-              name: homeassist-config-volume
-      volumes:
-        - name: homeassist-config-volume
-          configMap:
-            name: homeassist-config
+#   template:
+#     metadata:
+#       labels:
+#         app: homeassist
+#     spec:
+#       containers:
+#         - name: homeassist
+#           image: homeassistant/home-assistant
+#           ports:
+#             - containerPort: 8123
+#           volumeMounts:
+#             - mountPath: "/config"
+#               name: homeassist-persistent-storage
+#             - mountPath: "/config/configuration.yaml"
+#               subPath: "configuration"
+#               name: homeassist-config-volume
+#       volumes:
+#         - name: homeassist-config-volume
+#           configMap:
+#             name: homeassist-config
+#         - name: homeassist-persistent-storage
+#           persistentVolumeClaim:
+#             claimName: homeassist-pv-claim
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: homeassist-pod
+  labels:
+    app: homeassist
+spec:
+  securityContext:
+    privileged: true
+  volumes:
+    - name: homeassist-config-volume
+      configMap:
+        name: homeassist-config
+        items:
+          - key: configuration.yml
+            path: configuration.yml
+    - name: homeassist-persistent-storage
+      persistentVolumeClaim:
+        claimName: homeassist-pv-claim
+  containers:
+    - name: homeassistant
+      image: homeassistant/home-assistant
+      securityContext:
+        privileged: true
+        allowPrivilegeEscalation: true
+      ports:
+        - containerPort: 8123
+      volumeMounts:
         - name: homeassist-persistent-storage
-          persistentVolumeClaim:
-            claimName: homeassist-pv-claim
+          mountPath: "/config"
+        - name: homeassist-config-volume
+          mountPath: "/config"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: homeassist
+  name: homeassist-service
 spec:
   type: ClusterIP
   selector:
@@ -116,7 +153,6 @@ spec:
       protocol: TCP
       port: 443
       targetPort: 8123
-
 ---
 apiVersion: v1
 kind: Service
@@ -124,14 +160,15 @@ metadata:
   name: homeassist-ingress-tcp
   namespace: ingress
   annotations:
-    metallb.universe.tf/allow-shared-ip: "homeassist-shared-ip"
+    # metallb.universe.tf/loadBalancerIPs: 192.168.31.11
+    # metallb.universe.tf/allow-shared-ip: "homeassist-shared-ip"
 spec:
   selector:
     name: nginx-ingress-microk8s
   type: LoadBalancer
   # loadBalancerIP is optional. MetalLB will automatically allocate an IP
   # from its pool if not specified. You can also specify one manually.
-  loadBalancerIP: 192.168.31.10
+  loadBalancerIP: 192.168.31.11
   ports:
     - name: http
       protocol: TCP
@@ -161,6 +198,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: homeassist
+                name: homeassist-service
                 port:
                   number: 443
