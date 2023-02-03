@@ -43,7 +43,7 @@ kind: ConfigMap
 metadata:
   name: homeassist-config
 data:
-  configuration.yml: |
+  configuration.yaml: |
     homeassistant:
       # Name of the location where Home Assistant is running
       name: Cellerica
@@ -90,54 +90,22 @@ spec:
           ports:
             - containerPort: 8123
           volumeMounts:
-            - mountPath: "/config"
+            - mountPath: /config
               name: homeassist-persistent-storage
-            - mountPath: "/config/configuration.yaml"
-              name: homeassist-config-volume
+            - mountPath: /config/configuration.yaml
+              subPath: configuration.yaml
+              name: homeassist-config
       volumes:
-        - name: homeassist-config-volume
+        - name: homeassist-config
           configMap:
             name: homeassist-config
             items:
-              - key: configuration.yml
-                path: configuration.yml
+              - key: configuration.yaml
+                path: configuration.yaml
         - name: homeassist-persistent-storage
           persistentVolumeClaim:
             claimName: homeassist-pv-claim
 ---
-# apiVersion: v1
-# kind: Pod
-# metadata:
-#   name: homeassist-pod
-#   labels:
-#     app: homeassist
-# spec:
-#   securityContext:
-#     privileged: true
-#   volumes:
-#     - name: homeassist-config-volume
-#       configMap:
-#         name: homeassist-config
-#         items:
-#           - key: configuration.yml
-#             path: configuration.yml
-#     - name: homeassist-persistent-storage
-#       persistentVolumeClaim:
-#         claimName: homeassist-pv-claim
-#   containers:
-#     - name: homeassistant
-#       image: homeassistant/home-assistant
-#       securityContext:
-#         privileged: true
-#         allowPrivilegeEscalation: true
-#       ports:
-#         - containerPort: 8123
-#       volumeMounts:
-#         - name: homeassist-persistent-storage
-#           mountPath: "/config"
-#         - name: homeassist-config-volume
-#           mountPath: "/config"
-# ---
 apiVersion: v1
 kind: Service
 metadata:
