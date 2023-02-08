@@ -52,7 +52,7 @@ spec:
   template:
     metadata:
       labels:
-        app: homeassist
+        app: homeassist-app
     spec:
       containers:
         - name: homeassist
@@ -82,11 +82,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: homeassist
+  name: homeassist-service
 spec:
   type: ClusterIP
   selector:
-    app: homeassist
+    app: homeassist-app
   ports:
     - name: http
       protocol: TCP
@@ -144,6 +144,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: homeassist
+                name: homeassist-service
                 port:
                   number: 443
