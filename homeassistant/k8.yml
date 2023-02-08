@@ -52,7 +52,7 @@ spec:
   template:
     metadata:
       labels:
-        app: homeassist-app
+        app: homeassist
     spec:
       containers:
         - name: homeassist
@@ -86,7 +86,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: homeassist-app
+    app: homeassist
   ports:
     - name: http
       protocol: TCP
