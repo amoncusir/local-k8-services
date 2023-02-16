@@ -15,6 +15,9 @@ spec:
     spec:
       template:
         spec:
+          securityContext:
+            runAsUser: 999
+            runAsGroup: 999
           containers:
             - name: mongod
               resources:
@@ -24,9 +27,6 @@ spec:
                 requests:
                   cpu: "0.2"
                   memory: 200M
-              securityContext:
-                runAsUser: 999
-                runAsGroup: 999
             - name: mongodb-agent
               resources:
                 limits:
