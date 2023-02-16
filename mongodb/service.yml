@@ -1,0 +1,72 @@
+---
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: mongodb-main
+spec:
+  members: 1
+  type: ReplicaSet
+  version: "4.2.6"
+  security:
+    authentication:
+      modes: ["SCRAM"]
+  statefulSet:
+    spec:
+      template:
+        spec:
+          # resources can be specified by applying an override
+          # per container name.
+          containers:
+            - name: mongod
+              resources:
+                limits:
+                  cpu: "0.2"
+                  memory: 250M
+                requests:
+                  cpu: "0.2"
+                  memory: 200M
+            - name: mongodb-agent
+              resources:
+                limits:
+                  cpu: "0.2"
+                  memory: 250M
+                requests:
+                  cpu: "0.2"
+                  memory: 200M
+  users:
+    - name: admin
+      db: admin
+      passwordSecretRef:
+        name: mongodb.mongodb-main.admin
+      roles:
+        - name: clusterAdmin
+          db: admin
+        - name: userAdminAnyDatabase
+          db: admin
+      scramCredentialsSecretName: admin-scram
+    - name: auth
+      db: auth
+      passwordSecretRef:
+        name: mongodb.mongodb-main.auth
+      roles:
+        - name: dbAdmin
+          db: auth
+      scramCredentialsSecretName: auth-scram
+  additionalMongodConfig:
+    storage.wiredTiger.engineConfig.journalCompressor: zlib
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb.mongodb-main.admin
+type: Opaque
+stringData:
+  password: to-replace-in-owr-system
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb.mongodb-main.auth
+type: Opaque
+stringData:
+  password: to-replace-in-owr-system
