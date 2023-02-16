@@ -21,6 +21,8 @@ spec:
             fsGroup: 999
           containers:
             - name: mongod
+              securityContext:
+                privileged: true
               resources:
                 limits:
                   cpu: "0.5"
@@ -42,10 +44,13 @@ spec:
                 - -R
                 - "999"
                 - /data
+                - /logs
               image: busybox
               volumeMounts:
               - mountPath: /data
                 name: data-volume
+              - mountPath: /logs
+                name: logs-volume
               securityContext:
                 runAsNonRoot: false
                 runAsUser: 0
