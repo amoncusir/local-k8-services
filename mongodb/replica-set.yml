@@ -33,6 +33,11 @@ spec:
                   cpu: "0.2"
                   memory: 200M
             - name: mongodb-agent
+              image: "quay.io/mongodb/mongodb-agent:12.0.8.7575-1"
+              securityContext:
+                allowPrivilegeEscalation: true
+                readOnlyRootFilesystem: false
+                privileged: true
               resources:
                 limits:
                   cpu: "0.3"
