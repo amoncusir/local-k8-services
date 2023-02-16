@@ -7,7 +7,7 @@ metadata:
 spec:
   members: 1
   type: ReplicaSet
-  version: "6.0.4"
+  version: "4.4.0"
   security:
     authentication:
       modes: ["SCRAM"]
@@ -15,8 +15,6 @@ spec:
     spec:
       template:
         spec:
-          # resources can be specified by applying an override
-          # per container name.
           containers:
             - name: mongod
               resources:
