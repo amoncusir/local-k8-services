@@ -22,6 +22,8 @@ spec:
           containers:
             - name: mongod
               securityContext:
+                allowPrivilegeEscalation: true
+                readOnlyRootFilesystem: false
                 privileged: true
               resources:
                 limits:
