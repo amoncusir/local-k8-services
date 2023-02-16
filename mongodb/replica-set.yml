@@ -2,7 +2,7 @@
 apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
 metadata:
-  name: mongodb-main-set
+  name: mongodb-main
 spec:
   members: 1
   type: ReplicaSet
