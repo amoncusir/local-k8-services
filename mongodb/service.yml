@@ -55,21 +55,3 @@ spec:
       scramCredentialsSecretName: auth-scram
   additionalMongodConfig:
     storage.wiredTiger.engineConfig.journalCompressor: zlib
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mongodb.mongodb-main.admin
-  namespace: mongodb
-type: Opaque
-stringData:
-  password: to-replace-in-owr-system
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mongodb.mongodb-main.auth
-  namespace: mongodb
-type: Opaque
-stringData:
-  password: to-replace-in-owr-system
