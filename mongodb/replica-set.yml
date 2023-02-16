@@ -25,7 +25,6 @@ spec:
                   cpu: "0.2"
                   memory: 200M
                 securityContext:
-                  runAsNonRoot: false
                   runAsUser: 999
                   runAsGroup: 999
             - name: mongodb-agent
