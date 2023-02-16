@@ -3,10 +3,11 @@ apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
 metadata:
   name: mongodb-main
+  namespace: mongodb
 spec:
   members: 1
   type: ReplicaSet
-  version: "4.4.19"
+  version: "6.0.4"
   security:
     authentication:
       modes: ["SCRAM"]
