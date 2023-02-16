@@ -2,12 +2,12 @@
 apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
 metadata:
-  name: mongodb-main
+  name: mongodb-main-set
   namespace: mongodb
 spec:
   members: 1
   type: ReplicaSet
-  version: "4.4.0"
+  version: "4.2.6"
   security:
     authentication:
       modes: ["SCRAM"]
