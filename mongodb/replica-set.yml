@@ -24,6 +24,10 @@ spec:
                 requests:
                   cpu: "0.2"
                   memory: 200M
+                securityContext:
+                  runAsNonRoot: false
+                  runAsUser: 999
+                  runAsGroup: 999
             - name: mongodb-agent
               resources:
                 limits:
@@ -36,7 +40,7 @@ spec:
             - command:
                 - chown
                 - -R
-                - "2000"
+                - "999"
                 - /data
               image: busybox
               volumeMounts:
