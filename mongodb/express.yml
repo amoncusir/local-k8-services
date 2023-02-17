@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb-express-deployment
+  name: express-deployment
   labels:
     app: express
 spec:
@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb-express
+  name: express-app
 spec:
   type: ClusterIP
   selector:
