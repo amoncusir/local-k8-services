@@ -1,5 +1,5 @@
 
-.PHONY: dasboard
+.PHONY: dashboard
 dashboard:
 	@kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443
 
