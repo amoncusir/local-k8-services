@@ -103,7 +103,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: mongodb-express
+                name: express
                 port:
                   number: 443
 ---
