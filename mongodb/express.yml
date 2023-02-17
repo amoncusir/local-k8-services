@@ -103,7 +103,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: express
+                name: express-app
                 port:
                   number: 443
 ---
