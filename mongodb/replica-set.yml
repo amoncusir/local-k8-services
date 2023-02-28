@@ -98,6 +98,13 @@ spec:
         - name: readWrite
           db: auth
       scramCredentialsSecretName: auth-scram
+    - name: reader
+      db: reader
+      passwordSecretRef:
+        name: mongodb.mongodb-main.reader
+      roles:
+        - name: readAnyDatabase
+          db: reader
   additionalMongodConfig:
     storage.wiredTiger.engineConfig.journalCompressor: zlib
 ---
