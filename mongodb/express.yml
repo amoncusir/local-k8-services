@@ -34,7 +34,7 @@ spec:
             - name: MONGOKU_DEFAULT_HOST
               valueFrom:
                 secretKeyRef:
-                  name: mongodb-rs-main-auth-auth
+                  name: mongodb-rs-main-admin-admin
                   key: connectionString.standard
 ---
 apiVersion: v1
