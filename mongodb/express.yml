@@ -17,7 +17,6 @@ spec:
       containers:
         - name: express
           image: ubuntu
-          command: ['sh', '-c', 'echo The app is running!; wait; echo Shutdown']
           command:
             - sh
             - -c
