@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+  labels:
+    app: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: ghcr.io/amoncusir/simple-auth-service
+          ports:
+            - containerPort: 80
+          env:
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: common.jwt.user.secret
+                  key: secret
+            - name: JWT_SERVICE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: common.jwt.service.secret
+                  key: secret
+            - name: MONGODB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: auth.mongodb.url
+                  key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  type: NodePort
+  selector:
+    app: auth
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 80
