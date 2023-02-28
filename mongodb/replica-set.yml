@@ -87,6 +87,8 @@ spec:
           db: admin
         - name: userAdminAnyDatabase
           db: admin
+        - name: root
+          db: admin
       scramCredentialsSecretName: admin-scram
     - name: auth
       db: auth
