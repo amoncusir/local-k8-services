@@ -17,6 +17,7 @@ spec:
       containers:
         - name: express
           image: ubuntu
+          command: ['sh', '-c', 'echo The app is running! && wait']
           ports:
             - containerPort: 8081
           env:
