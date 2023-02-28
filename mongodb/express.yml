@@ -18,6 +18,20 @@ spec:
         - name: express
           image: ubuntu
           command: ['sh', '-c', 'echo The app is running!; wait; echo Shutdown']
+          command:
+            - sh
+            - -c
+            - |
+            /bin/bash <<'EOF'
+            sleep infinity & PID=$!
+            trap "kill $PID" INT TERM
+
+            echo App is Running
+
+            wait
+
+            echo App Sutdown
+            EOF
           ports:
             - containerPort: 8081
           env:
