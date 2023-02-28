@@ -95,8 +95,6 @@ spec:
       passwordSecretRef:
         name: mongodb.mongodb-main.auth
       roles:
-        - name: dbOwner
-          db: auth
         - name: readWrite
           db: auth
       scramCredentialsSecretName: auth-scram
