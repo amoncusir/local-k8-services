@@ -16,8 +16,7 @@ spec:
     spec:
       containers:
         - name: express
-          image: ubuntu
-          command: ['sh', '-c', 'echo The app is running! && sleep infinity && echo Shutdown']
+          image: mongo-express
           ports:
             - containerPort: 8081
           env:
