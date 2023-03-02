@@ -105,6 +105,7 @@ spec:
       roles:
         - name: readAnyDatabase
           db: reader
+      scramCredentialsSecretName: reader-scram
   additionalMongodConfig:
     storage.wiredTiger.engineConfig.journalCompressor: zlib
 ---
